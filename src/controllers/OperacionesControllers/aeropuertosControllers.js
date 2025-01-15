@@ -10,6 +10,19 @@ const getAllAeropuertos = async(req, res) =>{
     }
 };
 
+const getAeropuertosById = async(req, res) =>{
+    try {
+
+        const { id_aeropuerto } = req.params
+
+        const getAeropuertoId = await Aeropuertos.findByPk(id_aeropuerto);
+        res.json(getAeropuertoId);
+    } catch (error){
+        res.status (500).json({error: error.message, 
+            details: process.env.NODE_ENV === 'development' ? error.stack: undefined})
+    }
+};
+
 const createAeropuerto = async(req, res) => {
     try{
         const { nombre, ciudad, pais, codigo_iata } = req.body;
@@ -120,4 +133,5 @@ module.exports={
     createAeropuerto,
     deleteaeropuerto,
     updateAeropuerto,
+    getAeropuertosById
 };

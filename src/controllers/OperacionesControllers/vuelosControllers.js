@@ -58,8 +58,19 @@ const deleteVuelo = async (req, res) => {
         res.status(404).json({ error: 'Vuelo no Encontrado' });
       }
     } catch (error) {
-      res.status(500).json({ error: error.message,
-        details: process.env.NODE_ENV === 'development' ? error.stack : undefined });
+        // Verificar si es un error de restricción de llave foránea
+        if (error.name === 'SequelizeForeignKeyConstraintError') {
+            return res.status(409).json({
+                error: 'foreign key constraint',
+                message: 'No se puede eliminar el pasajero porque tiene registros relacionados'
+            });
+        }
+        
+        console.error(error);
+        res.status(500).json({
+            error: error.message,
+            message: 'Error al eliminar Vuelo'
+        });
     }
   };
 

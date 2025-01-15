@@ -13,6 +13,19 @@ const getEquipaje = async (req, res) => {
     }
 };
 
+const getEquipajeById = async (req, res) => {
+    try {
+        const { id_equipaje } = req.params
+        const getEquipaje = await Equipajes.findByPk(id_equipaje);
+        res.json(getEquipaje);
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+            details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        })
+    }
+};
+
 const deleteEquipaje = async (req, res) => {
     try {
         const { id_equipaje } = req.params;
@@ -110,4 +123,5 @@ module.exports = {
     createEquipaje,
     updateEquipaje,
     deleteEquipaje,
+    getEquipajeById
 };

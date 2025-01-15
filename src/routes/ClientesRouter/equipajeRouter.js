@@ -6,10 +6,12 @@ const{
     createEquipaje,
     updateEquipaje,
     deleteEquipaje,
+    getEquipajeById
 } = require('../../controllers/ClientesControllers/equipajeControllers.js');
 
 const router = express.Router();
 
+router.get('/equipaje/:id_equipaje', verifyToken, getEquipajeById)
 router.get('/equipaje',verifyToken, isAdmin, getEquipaje);
 router.post('/equipaje',verifyToken, isAdmin, createEquipaje);
 router.put('/equipaje/:id_equipaje',verifyToken, isAdmin, updateEquipaje);

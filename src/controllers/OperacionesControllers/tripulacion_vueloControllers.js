@@ -4,7 +4,15 @@ const Vuelos = require('../../models/OperacionesModels/vuelos.js');
 
 const getAllTripulaciones = async(req, res) =>{
     try{
-        const tripulacion = await Tripulacion.findAll();
+        const tripulacion = await Tripulacion.findAll({
+            include:[{
+                model: Empleado,
+                as: 'empleado',
+            },{
+                model: Vuelos,
+                as: 'vuelo',
+            }]
+        });
         res.json(tripulacion)
     }catch(error){
         res.status(500).json ({error: error.message});

@@ -10,6 +10,17 @@ const getAllAviones = async(req, res) =>{
     }
 };
 
+const getAvionesById = async(req, res) =>{
+    try {
+        const {id_avion} = req.params
+        const getAviones = await Aviones.findByPk(id_avion);
+        res.json(getAviones);
+    } catch (error){
+        res.status (500).json({error: error.message, 
+            details: process.env.NODE_ENV === 'development' ? error.stack: undefined})
+    }
+};
+
 const createAvion = async(req, res) => {
     try{
         const { modelo, capacidad, year_fabricacion, estado_avion } = req.body;
@@ -95,4 +106,5 @@ module.exports={
     createAvion,
     deleteAvion,
     updateAvion,
+    getAvionesById,
 };

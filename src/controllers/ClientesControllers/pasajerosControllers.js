@@ -105,7 +105,9 @@ const deletePasajero = async (req, res) =>{
 
         const pasajeroData = pasajero.toJSON();
 
-        await pasajero.destroy();
+        await pasajero.destroy({
+            where:{id_pasajero}
+        });
 
         return res.status(200).json({
             success: true,
@@ -113,9 +115,20 @@ const deletePasajero = async (req, res) =>{
             data: pasajeroData
         });
 
-    }catch (error){
-        res.status(500).json({ error: error.message,
-            details: process.env.NODE_ENV === 'development' ? error.stack : undefined });
+    }catch (error) {
+        // Verificar si es un error de restricción de llave foránea
+        if (error.name === 'SequelizeForeignKeyConstraintError') {
+            return res.status(409).json({
+                error: 'foreign key constraint',
+                message: 'No se puede eliminar el pasajero porque tiene registros relacionados'
+            });
+        }
+        
+        console.error(error);
+        res.status(500).json({
+            error: error.message,
+            message: 'Error al eliminar el pasajero'
+        });
     }
 }
 
