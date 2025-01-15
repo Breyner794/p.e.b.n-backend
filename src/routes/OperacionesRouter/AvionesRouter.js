@@ -1,4 +1,5 @@
 const express = require('express');
+const {verifyToken, isAdmin} = require('../../Middleware/auth.middleware.js')
 
 const{
     getAllAviones,
@@ -9,9 +10,9 @@ const{
 
 const router = express.Router();
 
-router.get('/aviones', getAllAviones);
-router.post('/aviones', createAvion);
-router.delete('/aviones/:id_avion', deleteAvion);
-router.put('/aviones/:id_avion', updateAvion);
+router.get('/aviones', verifyToken, getAllAviones);
+router.post('/aviones', verifyToken, isAdmin,createAvion);
+router.delete('/aviones/:id_avion',verifyToken, isAdmin, deleteAvion);
+router.put('/aviones/:id_avion',verifyToken, isAdmin, updateAvion);
 
 module.exports=router;

@@ -1,4 +1,5 @@
 const express = require('express');
+const {verifyToken, isAdmin} = require('../../Middleware/auth.middleware.js');
 
 const{
     getAllAeropuertos,
@@ -9,9 +10,9 @@ const{
 
 const router = express.Router();
 
-router.get('/aeropuertos', getAllAeropuertos);
-router.post('/aeropuertos', createAeropuerto);
-router.delete('/aeropuertos/:id_aeropuerto', deleteaeropuerto);
-router.put('/aeropuertos/:id_aeropuerto', updateAeropuerto);
+router.get('/aeropuertos',verifyToken, getAllAeropuertos);
+router.post('/aeropuertos',verifyToken, isAdmin, createAeropuerto);
+router.delete('/aeropuertos/:id_aeropuerto',verifyToken, isAdmin, deleteaeropuerto);
+router.put('/aeropuertos/:id_aeropuerto',verifyToken, isAdmin, updateAeropuerto);
 
 module.exports=router;

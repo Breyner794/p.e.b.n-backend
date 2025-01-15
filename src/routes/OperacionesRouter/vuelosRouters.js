@@ -1,4 +1,5 @@
 const express = require('express');
+const {verifyToken, isAdmin} =require('../../Middleware/auth.middleware.js');
 
 const {
     
@@ -13,10 +14,10 @@ const {
 const router = express.Router();
 
 
-router.get('/vuelos', getAllVuelos);
-router.get('/vuelos/:id_vuelo', getVuelos);
-router.delete('/vuelos/:id_vuelo', deleteVuelo);
-router.post('/vuelos', createVuelo);
-router.put('/vuelos/:id_vuelo', updateVuelo);
+router.get('/vuelos',verifyToken, getAllVuelos);
+router.get('/vuelos/:id_vuelo',verifyToken, getVuelos);
+router.delete('/vuelos/:id_vuelo',verifyToken, isAdmin, deleteVuelo);
+router.post('/vuelos',verifyToken, isAdmin, createVuelo);
+router.put('/vuelos/:id_vuelo',verifyToken, isAdmin, updateVuelo);
 
 module.exports=router;
